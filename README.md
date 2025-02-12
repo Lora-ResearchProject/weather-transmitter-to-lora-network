@@ -2,11 +2,11 @@
 
 ## Description
 
-Because the LoRa network cannot transmit large weather data packets over long distances, this simple algorithm converts the data into a compact format ready for transmission.
+LoRa networks are optimized for low-power, long-range communication and therefore impose strict limits on packet sizes. This algorithm overcomes that limitation by extracting only the essential weather information—such as overall conditions, humidity, and cloud coverage—and compressing it into a compact format. This streamlined data package ensures that critical weather updates can be transmitted efficiently over long distances without overwhelming the network or draining device power.Because the LoRa network cannot transmit large weather data packets over long distances, this simple algorithm converts the data into a compact format ready for transmission.
 
 ## Working Flow
 
-Request -> OpenWeatherAPI -> OpenAI API -> response
+The working flow begins when the API receives the latitude and longitude, triggering a call to the OpenWeather API to fetch current weather data. Once received, the algorithm filters out non-essential information, extracting only critical fields such as the main weather condition, description, cloud coverage, and humidity. This streamlined data is then formatted into a concise message and sent to the ChatGPT API with a prompt asking for a rain likelihood percentage. The response is checked for the correct percentage format; if it meets the criteria, the value is returned, otherwise, the system retries before ultimately returning an error if a valid response cannot be obtained.
 
 ## Installation
 
@@ -55,6 +55,33 @@ Request -> OpenWeatherAPI -> OpenAI API -> response
 
 ## Error Handling
 
+- **400 Bad Request:** Return when input data is invalid (e.g., incorrect format).
+- **500 Internal Server Error:** Returned for unexpected server-side issues.
+
+## Compatible versions
+
+
 ## Deployment
+
+- Make the Docker environment
+- Clone the repository
+- Build the following command to build the service:
+
+  ```
+  docker build -t fishing-hotspots-api .
+  ```
+- Run the docker image
+
+  - The port number might be change
+
+  ```
+  docker run -d -p 9003:9003 fishing-hotspots-api
+  ```
+- Check the status of the container
+
+  ```
+  docker ps
+  ```
+
 
 ## Current Deployemnt
