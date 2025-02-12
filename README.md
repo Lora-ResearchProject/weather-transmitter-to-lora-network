@@ -27,28 +27,25 @@ The working flow begins when the API receives the latitude and longitude, trigge
 
 ### Get the rain percentage
 
-- **Endpoint: POST /weather-check**
-- This API endpoint use to get the currnet rain presentage of the specific location
-- Query Parameters:
+* **Endpoint: POST /weather-check**
+* This API endpoint use to get the currnet rain presentage of the specific location
+* Query Parameters:
 
-  - `lat`: latitude
-  - `lon` : longitude
-
-- Query parameter Examples:
+  * `lat`: latitude
+  * `lon` : longitude
+* Query parameter Examples:
 
   ```
   /weather-check?lat=44.34&lon=10.99
   ```
+* Response:
 
-- Response:
-
-  - Success:
+  * Success:
 
     ```
     {"rain_percentage":"0%"}
     ```
-
-  - Faliure:
+  * Faliure:
 
     ```
     {
@@ -63,6 +60,7 @@ The working flow begins when the API receives the latitude and longitude, trigge
 
 ## Compatible versions
 
+
 ## Deployment
 
 - Make the Docker environment
@@ -70,17 +68,15 @@ The working flow begins when the API receives the latitude and longitude, trigge
 - Build the following command to build the service:
 
   ```
-  docker build -t fishing-hotspots-api .
+  docker build -t weather-transmitter-to-lora-network .
   ```
-
 - Run the docker image
 
   - The port number might be change
 
   ```
-  docker run -d -p 9003:9003 fishing-hotspots-api
+  docker run -d -p 9003:9003 weather-transmitter-to-lora-network
   ```
-
 - Check the status of the container
 
   ```
