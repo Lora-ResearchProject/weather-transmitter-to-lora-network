@@ -57,12 +57,13 @@ def ask_chatgpt(weather_data: dict) -> str:
     return answer
 
 @app.get("/weather-check")
-def weather_check(lat: float = 44.34, lon: float = 10.99):
+def weather_check(lat: float, lon: float):
     """
-    API endpoint to check weather. It fetches the current weather data for the
-    given latitude and longitude, sends it to ChatGPT, and returns a percentage value.
+    API endpoint to check weather.
+    The endpoint fetches the current weather data for the provided latitude and longitude,
+    sends it to the ChatGPT API, and returns a percentage value indicating the rain likelihood.
     """
-    # Fetch weather data from OpenWeather API
+    # Fetch weather data from OpenWeather API using the provided lat and lon
     params = {
         "lat": lat,
         "lon": lon,
@@ -71,7 +72,7 @@ def weather_check(lat: float = 44.34, lon: float = 10.99):
     weather_response = requests.get(openweatherurl, params=params)
     if weather_response.status_code != 200:
         raise HTTPException(
-            status_code=weather_response.status_code, 
+            status_code=weather_response.status_code,
             detail="Error fetching weather data"
         )
     weather_data = weather_response.json()
@@ -85,7 +86,7 @@ def weather_check(lat: float = 44.34, lon: float = 10.99):
 
     if not is_valid_percentage(result):
         raise HTTPException(
-            status_code=500, 
+            status_code=500,
             detail="Failed to get valid percentage response from ChatGPT API"
         )
 
