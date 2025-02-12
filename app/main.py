@@ -33,19 +33,18 @@ def is_valid_percentage(text: str) -> bool:
     pattern = r'^\d+%$'
     return re.match(pattern, text.strip()) is not None
 
-def ask_chatgpt(weather_data: dict) -> str:
+def ask_chatgpt(filtered_data: dict) -> str:
     """
-    Send the weather data and a prompt to ChatGPT API and return the answer.
+    Send the filtered weather data and a prompt to the ChatGPT API and return the answer.
     """
     prompt = (
-        "According to above details is it rainy day or not, "
-        "give me details in percentage format like 10%, 23% or any. "
-        "Make sure no give any other response, since your response now use by API. "
-        "just value and the percentage mark only.\n\n"
-        f"Weather data: {weather_data}"
+        "According to the following weather details, is it a rainy day or not? "
+        "Provide your answer in percentage format (e.g., 10%, 23%). "
+        "Return only the value with a percentage sign, nothing else.\n\n"
+        f"Weather details: {filtered_data}"
     )
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # or any available model you prefer
+        model=os.getenv("OPENAI_API_MODEL"),  # or any available model you prefer
         messages=[
             {"role": "system", "content": "You are a weather data analyzer."},
             {"role": "user", "content": prompt}
@@ -61,7 +60,8 @@ def weather_check(lat: float, lon: float):
     """
     API endpoint to check weather.
     The endpoint fetches the current weather data for the provided latitude and longitude,
-    sends it to the ChatGPT API, and returns a percentage value indicating the rain likelihood.
+    filters out necessary fields for determining rain likelihood,
+    sends the filtered data to the ChatGPT API, and returns a percentage value.
     """
     # Fetch weather data from OpenWeather API using the provided lat and lon
     params = {
@@ -77,10 +77,21 @@ def weather_check(lat: float, lon: float):
         )
     weather_data = weather_response.json()
 
+    # Filter out necessary fields for rain decision
+    try:
+        filtered_data = {
+            "weather_main": weather_data["weather"][0]["main"],
+            "weather_description": weather_data["weather"][0]["description"],
+            "clouds": weather_data.get("clouds", {}).get("all"),
+            "humidity": weather_data.get("main", {}).get("humidity")
+        }
+    except (KeyError, IndexError) as e:
+        raise HTTPException(status_code=500, detail="Error parsing weather data: " + str(e))
+
     # Ask ChatGPT for the percentage response, retrying up to 3 times if needed
     result = None
     for _ in range(3):
-        result = ask_chatgpt(weather_data)
+        result = ask_chatgpt(filtered_data)
         if is_valid_percentage(result):
             break
 
