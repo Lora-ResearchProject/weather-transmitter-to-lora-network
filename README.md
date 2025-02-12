@@ -25,6 +25,34 @@ Request -> OpenWeatherAPI -> OpenAI API -> response
 
 ## API Integration
 
+### Get the rain percentage
+
+* **Endpoint: POST /weather-check**
+* This API endpoint use to get the currnet rain presentage of the specific location
+* Query Parameters:
+
+  * `lat`: latitude
+  * `lon` : longitude
+* Query parameter Examples:
+
+  ```
+  /weather-check?lat=44.34&lon=10.99
+  ```
+* Response:
+
+  * Success:
+
+    ```
+    {"rain_percentage":"0%"}
+    ```
+  * Faliure:
+
+    ```
+    {
+      "detail": "Both 'lat' and 'lon' query parameters are required."
+    }
+    ```
+
 ## Error Handling
 
 ## Deployment
