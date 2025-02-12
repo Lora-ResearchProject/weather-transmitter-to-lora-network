@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+from typing import Optional
 
 # Load environment variables
 load_dotenv()
@@ -56,13 +57,20 @@ def ask_chatgpt(filtered_data: dict) -> str:
     return answer
 
 @app.get("/weather-check")
-def weather_check(lat: float, lon: float):
+def weather_check(lat: Optional[float] = None, lon: Optional[float] = None):
     """
     API endpoint to check weather.
     The endpoint fetches the current weather data for the provided latitude and longitude,
     filters out necessary fields for determining rain likelihood,
     sends the filtered data to the ChatGPT API, and returns a percentage value.
     """
+    # Check if both lat and lon are provided
+    if lat is None or lon is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Both 'lat' and 'lon' query parameters are required."
+        )
+
     # Fetch weather data from OpenWeather API using the provided lat and lon
     params = {
         "lat": lat,
