@@ -1,0 +1,19 @@
+[
+  {
+    "id": "github-webhook",
+    "execute-command": "/root/research/weather-transmitter-to-lora-network/deploy.sh",
+    "command-working-directory": "/root/research/weather-transmitter-to-lora-network/",
+    "response-message": "WeatherAPI - Deployment initiated",
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "secret": "aqure-secret",
+        "parameter": {
+          "source": "header",
+          "name": "X-GitHub-Event"
+        },
+        "value": "push"
+      }
+    }
+  }
+]
