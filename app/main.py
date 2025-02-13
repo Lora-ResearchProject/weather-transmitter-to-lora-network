@@ -68,7 +68,7 @@ def weather_check(lat: Optional[float] = None, lon: Optional[float] = None):
     if lat is None or lon is None:
         raise HTTPException(
             status_code=400,
-            detail="Both 'lat' and 'lon' query parameters are required. - Check 2"
+            detail="Both 'lat' and 'lon' query parameters are required. - Check 3"
         )
 
     # Fetch weather data from OpenWeather API using the provided lat and lon
