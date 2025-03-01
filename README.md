@@ -60,7 +60,6 @@ The working flow begins when the API receives the latitude and longitude, trigge
 
 ## Compatible versions
 
-
 ## Deployment
 
 - Make the Docker environment
@@ -75,7 +74,7 @@ The working flow begins when the API receives the latitude and longitude, trigge
   - The port number might be change
 
   ```
-  docker run -d -p 9003:9003 weather-transmitter-to-lora-network
+  docker run -d -p 9003:9003 --name weather-transmitter-to-lora-network-container weather-transmitter-to-lora-network
   ```
 - Check the status of the container
 
