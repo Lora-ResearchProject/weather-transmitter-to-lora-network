@@ -4,8 +4,8 @@
 LOGFILE="$(pwd)/deploy.log"
 REPO_DIR="$(pwd)"  # The repository directory is the current working directory
 DOCKERFILE="Dockerfile"
-IMAGE_NAME="fishing-hotspots-api"
-CONTAINER_NAME="fishing-hotspots-api-container"
+IMAGE_NAME="weather-transmitter-to-lora-network"
+CONTAINER_NAME="weather-transmitter-to-lora-network-container"
 
 # Log the start of the deployment
 echo "Deployment started at $(date)" >> "$LOGFILE"
