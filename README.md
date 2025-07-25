@@ -69,12 +69,26 @@ The working flow begins when the API receives the latitude and longitude, trigge
   ```
   docker build -t weather-transmitter-to-lora-network .
   ```
+- Delete the existing container with the same names
+
+  ```
+  docker rm -f weather-transmitter-to-lora-network-container
+  ```
 - Run the docker image
 
   - The port number might be change
 
   ```
-  docker run -d -p 9003:9003 --name weather-transmitter-to-lora-network-container weather-transmitter-to-lora-network
+  docker run -d \
+    --name weather-transmitter-to-lora-network-container \
+    --network aquesafe-net \
+    -p 9003:9003 \
+    weather-transmitter-to-lora-network
+  ```
+- Now you must use the following in the same server IP (do not use the IP as it is)
+
+  ```
+  http://weather-transmitter-to-lora-network-container:9003
   ```
 - Check the status of the container
 
